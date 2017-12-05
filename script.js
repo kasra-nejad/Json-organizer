@@ -3,26 +3,51 @@ window.onload = () => {
   let button = document.querySelector("#submit");
   let weather = document.querySelector('#weather');
   // Checks value type and displays property and value.
-  let logLi = function(k, j) {
+  let logLi = (k, j) => {
+    const liAppend = (x, y) => {
+      x.appendChild(y);
+      weather.appendChild(x);
+    }
     if (typeof j === 'object') {
       isObject(j);
-    } else {
+    } else if (k == 'temp' || k == 'name') {
       let li = document.createElement('LI');
-      let liText = document.createTextNode('\u00A0\u00A0\u00A0\u00A0' + k + ": " + j);
-      li.appendChild(liText)
-      weather.appendChild(li);
-    }
-  }
-  // Checks Object's name type, and displays name of object or Array
-  let logUl = (x) => {
-    if (isNaN(x)) {
-      let output = document.createElement('UL');
-      let outputText = document.createTextNode(x);
-      output.appendChild(outputText);
-      weather.appendChild(output);
-    }
-  }
+      li.style.gridColumn = "3/-1"
 
+      if (isNaN(j)) {
+        let liText = document.createTextNode(j);
+        liAppend(li, liText);
+      } else {
+        let bar = document.createElement("div");
+        let temp = Math.round(j, 2);
+        if (temp < 0) {
+          let liText = document.createTextNode(temp);
+          bar.style.transformOrigin = "0%";
+          bar.style.transform = `rotate(180deg)`;
+          temp = -temp;
+          bar.style.width = temp * 20 + "px";
+          bar.style.height = "50px";
+          bar.style.backgroundColor = 'black';
+          li.appendChild(liText);
+          li.appendChild(bar);
+          weather.appendChild(li);
+        } else {
+          let liText = document.createTextNode(temp);
+          // bar.style.transformOrigin = "100%";
+          bar.style.transform = `rotate(0deg)`;
+          // temp != -temp;
+          bar.style.width = temp * 20 + "px";
+          bar.style.height = "50px";
+          bar.style.backgroundColor = 'black';
+          li.appendChild(liText);
+          li.appendChild(bar);
+          weather.appendChild(li);
+        }
+      }
+
+      // let liText = document.createTextNode(Math.round(j,2));
+    }
+  }
   // Calls logLi on every value in object
   let isObject = (x) => {
     for (let i in x) {
@@ -46,10 +71,8 @@ window.onload = () => {
             if (typeof x[k] == 'number' || typeof x[k] == 'string') {
               logLi(k, x[k]);
             } else if (Array.isArray(x[k])) {
-              logUl(k);
               sort(x[k]);
             } else if (typeof x[k] == 'object') {
-              logUl(k);
               isObject(x[k]);
             }
           }
