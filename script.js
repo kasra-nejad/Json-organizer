@@ -24,7 +24,7 @@ window.onload = () => {
         bar.appendChild(degrees);
         bar.classList.add("bar");
         li.appendChild(bar);
-        li.classList.add("displayedTemp");
+        li.classList.add("tempBar");
         li.style.gridColumn = "5/-1";
         weather.appendChild(li);
       }
