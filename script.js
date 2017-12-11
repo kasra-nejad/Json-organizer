@@ -3,33 +3,59 @@ window.onload = () => {
   let button = document.querySelector("#submit");
   let weather = document.querySelector('#weather');
   // Checks value type and displays property and value.
-  let logLi = function(k, j) {
+  const logLi = (k, j) => {
+    const li = document.createElement('LI');
+
+    const displayCity = (x, y) => {
+      x.appendChild(y);
+      x.style.gridColumn = "4/6";
+      x.classList.add("location");
+      weather.appendChild(x);
+    }
+
+    const displayTemp = (x) => {
+      let bar = document.createElement("div");
+      let temp = Math.round(x, 2);
+      let liText = document.createTextNode(temp);
+      let degrees = document.createElement("div");
+      const project = () => {
+        degrees.appendChild(liText);
+        bar.style.width = temp * 20 + "px";
+        bar.appendChild(degrees);
+        bar.classList.add("bar");
+        li.appendChild(bar);
+        li.classList.add("displayedTemp");
+        li.style.gridColumn = "5/-1";
+        weather.appendChild(li);
+      }
+      if (temp < 0) {
+        temp = -temp;
+        degrees.classList.add("space-right");
+        project();
+      } else {
+        degrees.classList.add("space-left");
+        bar.classList.add("reverse");
+        project();
+      }
+    }
+
     if (typeof j === 'object') {
       isObject(j);
-    } else {
-      let li = document.createElement('LI');
-      let liText = document.createTextNode('\u00A0\u00A0\u00A0\u00A0' + k + ": " + j);
-      li.appendChild(liText)
-      weather.appendChild(li);
+    } else if (k == 'temp' || k == 'name') {
+      if (isNaN(j)) {
+        let liText = document.createTextNode(j);
+        displayCity(li, liText);
+      } else {
+        displayTemp(j);
+      }
     }
   }
-  // Checks Object's name type, and displays name of object or Array
-  let logUl = (x) => {
-    if (isNaN(x)) {
-      let output = document.createElement('UL');
-      let outputText = document.createTextNode(x);
-      output.appendChild(outputText);
-      weather.appendChild(output);
-    }
-  }
-
   // Calls logLi on every value in object
   let isObject = (x) => {
     for (let i in x) {
       logLi(i, x[i]);
     }
   };
-
   //Updates Query url when user submits their city
   let city = () => {
     weather.innerHTML = '';
@@ -46,16 +72,13 @@ window.onload = () => {
             if (typeof x[k] == 'number' || typeof x[k] == 'string') {
               logLi(k, x[k]);
             } else if (Array.isArray(x[k])) {
-              logUl(k);
               sort(x[k]);
             } else if (typeof x[k] == 'object') {
-              logUl(k);
               isObject(x[k]);
             }
           }
         }
         sort(data);
-
       });
     });
   }
@@ -66,5 +89,4 @@ window.onload = () => {
       city();
     }
   });
-
 };
