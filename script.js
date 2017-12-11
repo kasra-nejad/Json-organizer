@@ -6,46 +6,46 @@ window.onload = () => {
   let logLi = (k, j) => {
     const liAppend = (x, y) => {
       x.appendChild(y);
+      x.style.gridColumn = "4/6";
+      x.classList.add("location");
       weather.appendChild(x);
     }
+
     if (typeof j === 'object') {
       isObject(j);
     } else if (k == 'temp' || k == 'name') {
       let li = document.createElement('LI');
-      li.style.gridColumn = "3/-1"
+      // li.style.gridColumn = "5/-1";
 
       if (isNaN(j)) {
         let liText = document.createTextNode(j);
         liAppend(li, liText);
+
       } else {
         let bar = document.createElement("div");
         let temp = Math.round(j, 2);
+        let liText = document.createTextNode(temp);
+        let degrees = document.createElement("div");
+        const project = () => {
+          degrees.appendChild(liText);
+          bar.style.width = temp * 20 + "px";
+          bar.appendChild(degrees);
+          li.classList.add("displayedTemp");
+          li.appendChild(bar);
+          li.style.gridColumn = "5/-1";
+          weather.appendChild(li);
+          bar.classList.add("bar");
+        }
         if (temp < 0) {
-          let liText = document.createTextNode(temp);
-          bar.style.transformOrigin = "0%";
-          bar.style.transform = `rotate(180deg)`;
           temp = -temp;
-          bar.style.width = temp * 20 + "px";
-          bar.style.height = "50px";
-          bar.style.backgroundColor = 'black';
-          li.appendChild(liText);
-          li.appendChild(bar);
-          weather.appendChild(li);
+          degrees.classList.add("space-right");
+          project();
         } else {
-          let liText = document.createTextNode(temp);
-          // bar.style.transformOrigin = "100%";
-          bar.style.transform = `rotate(0deg)`;
-          // temp != -temp;
-          bar.style.width = temp * 20 + "px";
-          bar.style.height = "50px";
-          bar.style.backgroundColor = 'black';
-          li.appendChild(liText);
-          li.appendChild(bar);
-          weather.appendChild(li);
+          degrees.classList.add("space-left");
+          bar.classList.add("reverse");
+          project();
         }
       }
-
-      // let liText = document.createTextNode(Math.round(j,2));
     }
   }
   // Calls logLi on every value in object
@@ -57,7 +57,7 @@ window.onload = () => {
 
   //Updates Query url when user submits their city
   let city = () => {
-    weather.innerHTML = '';
+    //weather.innerHTML = '';
     let api = "https://api.openweathermap.org/data/2.5/weather?q=";
     let units = "&units=metric&APPID=a3c1886f5eb76ddfb52f47c56366e0e3"
     let url;

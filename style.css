@@ -1,14 +1,14 @@
-*{
+* {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
 }
 
-body{
+body {
   width: 80vw;
   margin: auto;
   display: grid;
-  justify-items:center;
+  justify-items: center;
 }
 
 input {
@@ -16,25 +16,80 @@ input {
   margin: 0 1px 0 1px;
 }
 
-.search{
+.search {
   padding-top: 1vh;
 }
 
-#submit{
+#submit {
   background: black;
   color: white;
   border: none;
   padding: 1px;
 }
 
-#weather{
+#weather {
   margin-top: 20px;
   list-style-type: none;
   display: grid;
+  /*justify-items: center;*/
+  grid-template-columns: repeat(8, 1fr);
+  grid-auto-rows: 1fr 0.65fr;
+}
+
+.location {
+  grid-column: 4/6;
+  display: grid;
   justify-items: center;
-  grid-template-columns: repeat(4,1fr);
+  align-items: center;
 }
 
 .bar {
   color: red;
+  display: grid;
+  align-items: center;
+  font-size: 24px;
+  grid-row: 2;
+  transform-origin: 0%;
+  transform: rotate(180deg);
+  height: 50px;
+  background-color: black;
 }
+
+.reverse {
+  transform-origin: 0%;
+  transform: rotate(0deg);
+}
+
+.space-right {
+  display: grid;
+  justify-items: end;
+  transform: rotate(180deg);
+  position: relative;
+  left: 0.25em;
+}
+
+.space-left {
+  position: relative;
+  left: 0.25em;
+}
+
+/*.error{
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  opacity: 0.85;
+  z-index: 1;
+  display: none;
+  align-items: center;
+  justify-items: center;
+  }
+
+.message {
+  display: grid;
+  text-align: center;
+  font-size: 3rem;
+  position: relative;
+  top: 5rem;
+}*/
