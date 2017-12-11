@@ -3,48 +3,50 @@ window.onload = () => {
   let button = document.querySelector("#submit");
   let weather = document.querySelector('#weather');
   // Checks value type and displays property and value.
-  let logLi = (k, j) => {
-    const liAppend = (x, y) => {
+  const logLi = (k, j) => {
+    const li = document.createElement('LI');
+
+    const displayCity = (x, y) => {
       x.appendChild(y);
       x.style.gridColumn = "4/6";
       x.classList.add("location");
       weather.appendChild(x);
     }
 
+    const displayTemp = (x) => {
+      let bar = document.createElement("div");
+      let temp = Math.round(x, 2);
+      let liText = document.createTextNode(temp);
+      let degrees = document.createElement("div");
+      const project = () => {
+        degrees.appendChild(liText);
+        bar.style.width = temp * 20 + "px";
+        bar.appendChild(degrees);
+        bar.classList.add("bar");
+        li.appendChild(bar);
+        li.classList.add("displayedTemp");
+        li.style.gridColumn = "5/-1";
+        weather.appendChild(li);
+      }
+      if (temp < 0) {
+        temp = -temp;
+        degrees.classList.add("space-right");
+        project();
+      } else {
+        degrees.classList.add("space-left");
+        bar.classList.add("reverse");
+        project();
+      }
+    }
+
     if (typeof j === 'object') {
       isObject(j);
     } else if (k == 'temp' || k == 'name') {
-      let li = document.createElement('LI');
-      // li.style.gridColumn = "5/-1";
-
       if (isNaN(j)) {
         let liText = document.createTextNode(j);
-        liAppend(li, liText);
-
+        displayCity(li, liText);
       } else {
-        let bar = document.createElement("div");
-        let temp = Math.round(j, 2);
-        let liText = document.createTextNode(temp);
-        let degrees = document.createElement("div");
-        const project = () => {
-          degrees.appendChild(liText);
-          bar.style.width = temp * 20 + "px";
-          bar.appendChild(degrees);
-          li.classList.add("displayedTemp");
-          li.appendChild(bar);
-          li.style.gridColumn = "5/-1";
-          weather.appendChild(li);
-          bar.classList.add("bar");
-        }
-        if (temp < 0) {
-          temp = -temp;
-          degrees.classList.add("space-right");
-          project();
-        } else {
-          degrees.classList.add("space-left");
-          bar.classList.add("reverse");
-          project();
-        }
+        displayTemp(j);
       }
     }
   }
@@ -54,10 +56,9 @@ window.onload = () => {
       logLi(i, x[i]);
     }
   };
-
   //Updates Query url when user submits their city
   let city = () => {
-    //weather.innerHTML = '';
+    weather.innerHTML = '';
     let api = "https://api.openweathermap.org/data/2.5/weather?q=";
     let units = "&units=metric&APPID=a3c1886f5eb76ddfb52f47c56366e0e3"
     let url;
@@ -78,7 +79,6 @@ window.onload = () => {
           }
         }
         sort(data);
-
       });
     });
   }
@@ -89,5 +89,4 @@ window.onload = () => {
       city();
     }
   });
-
 };
