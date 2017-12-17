@@ -5,17 +5,29 @@ window.onload = () => {
   let weatherData = document.querySelector(".weatherData");
   let top = document.querySelector(".top");
   let bottom = document.querySelector(".bottom");
+  let bar = document.querySelector(".bar");
+  let degrees = document.querySelector(".degrees");
   let jsonData;
 
-  //Updates Query url when user submits their city
+  //Updates url when user submits their city
   let city = () => {
 
     weather.innerHTML = '';
-    let api = "https://api.openweathermap.org/data/2.5/weather?q=";
-    let units = "&units=metric&APPID=a3c1886f5eb76ddfb52f47c56366e0e3"
+    const api = "https://api.openweathermap.org/data/2.5/weather?q=";
+    const units = "&units=metric&APPID=a3c1886f5eb76ddfb52f47c56366e0e3"
     let url = api + cityName.value + units;
-    let bar = document.createElement("div");
-    let degrees = document.createElement("div");
+    const plus = () => {
+      degrees.innerHTML = '';
+      degrees.classList.add("space-left");
+      degrees.classList.remove("space-right");
+      bar.classList.add("reverse");
+    }
+    const minus = () => {
+      degrees.innerHTML = '';
+      degrees.classList.add("space-right");
+      degrees.classList.remove("space-left");
+      bar.classList.remove("reverse");
+    }
 
     //Breaks down the JSON
     $(document).ready(function() {
@@ -27,20 +39,17 @@ window.onload = () => {
         top.innerHTML = location;
         top.classList.add('location');
         if (temp < 0) {
-          bottom.innerHTML = '';
           temp = -temp;
-          degrees.classList.add("space-right");
+          minus();
         } else {
-          bottom.innerHTML = '';
-          degrees.classList.add("space-left");
-          bar.classList.add("reverse");
-        }
+          plus();
+         }
+
         degrees.appendChild(liText);
         bar.style.width = temp * 20 + "px";
         bar.appendChild(degrees);
-        bar.classList.add("bar");
+        bar.classList.add("active-bar");
         bottom.appendChild(bar);
-
         weather.appendChild(weatherData);
       });
     });
