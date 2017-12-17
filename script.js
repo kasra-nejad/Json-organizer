@@ -1,21 +1,20 @@
 window.onload = () => {
-  let cityName = document.querySelector("#city");
-  let button = document.querySelector("#submit");
-  let weather = document.querySelector('#weather');
-  let weatherData = document.querySelector(".weatherData");
-  let top = document.querySelector(".top");
-  let bottom = document.querySelector(".bottom");
-  let bar = document.querySelector(".bar");
-  let degrees = document.querySelector(".degrees");
+  const cityName = document.querySelector("#city");
+  const button = document.querySelector("#submit");
+  const weather = document.querySelector('#weather');
+  const weatherData = document.querySelector(".weatherData");
+  const top = document.querySelector(".top");
+  const bottom = document.querySelector(".bottom");
+  const bar = document.querySelector(".bar");
+  const degrees = document.querySelector(".degrees");
   let jsonData;
 
   //Updates url when user submits their city
-  let city = () => {
-
+  const city = () => {
     weather.innerHTML = '';
     const api = "https://api.openweathermap.org/data/2.5/weather?q=";
     const units = "&units=metric&APPID=a3c1886f5eb76ddfb52f47c56366e0e3"
-    let url = api + cityName.value + units;
+    const url = api + cityName.value + units;
     const plus = () => {
       degrees.innerHTML = '';
       degrees.classList.add("space-left");
@@ -33,9 +32,9 @@ window.onload = () => {
     $(document).ready(function() {
       $.getJSON(url, function(data) {
         jsonData = data;
-        let location = jsonData.name;
-        let temp = Math.round(jsonData.main.temp, 2);
-        let liText = document.createTextNode(temp);
+        const location = jsonData.name;
+        const temp = Math.round(jsonData.main.temp, 2);
+        const liText = document.createTextNode(temp);
         top.innerHTML = location;
         top.classList.add('location');
         if (temp < 0) {
@@ -43,8 +42,7 @@ window.onload = () => {
           minus();
         } else {
           plus();
-         }
-
+        }
         degrees.appendChild(liText);
         bar.style.width = temp * 20 + "px";
         bar.appendChild(degrees);
